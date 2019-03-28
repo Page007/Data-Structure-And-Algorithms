@@ -1,70 +1,74 @@
-#include "library.h"
+#include "utility.h"
+
 int main()
 {
-    // Call build1 for the static set building.
-    int a[5] = {1, 4, 4, 4, 4}; 
-    struct Node** hash = build1(a, 5);
-    enumerate(hash);
-    /*
-    if(is_element_of(hash, 23))
-        printf("23 is an element of hash\n");
-    else
-        printf("23 is not an element of hash\n");
-    if(is_empty(hash))
-        printf("hash is empty\n");
-    else
-        printf("hash is not empty\n");
-    printf("Declaring the second hash\n");
-    struct Node** hash1;
-    hash1 = setup(hash1);
-    if(is_empty(hash1))
-        printf("The second hash is empty\n");
-    else
-        printf("The second hash is not empty\n");
-    int s = size(hash1);
-    printf("The size of the hash is %d\n", s);
-    */
-    /*
-    struct Node** dynamicSet;
-    dynamicSet = create(dynamicSet);
-    dynamicSet = add(dynamicSet, 10); 
-    printf("1st element inserted\n");
-    dynamicSet = add(dynamicSet, 20);
-    dynamicSet = add(dynamicSet, 30);
-    //enumerate(dynamicSet);
-    dynamicSet = add(dynamicSet, 10);
-    dynamicSet = add(dynamicSet, 23);
-    dynamicSet = deleteNode(dynamicSet, 23);
-    enumerate(dynamicSet);
-    */
-    // Deploying Special Ops : 
-    struct Node** dSet;
-    dSet = create(dSet);
-    //dSet = add(dSet, 11);
-    //dSet = add(dSet, 12);
-    dSet = add(dSet, 30);
-    dSet = add(dSet, 4);
-    dSet = add(dSet, 33);
-    //enumerate(dSet);
-    struct Node** dSet1;
-    dSet1 = create(dSet1);
-    dSet1 = add(dSet1, 20);
-    dSet1 = add(dSet1, 30);
-    dSet1 = add(dSet1, 10);
-    dSet1 = add(dSet1, 4);
-    dSet1 = add(dSet1, 33);
-    struct Node** dSet2;
-    dSet2 = difference(dSet1, dSet);
-    enumerate(dSet);
-    printf("\n");
-    enumerate(dSet1);
-    printf("\n");
-    enumerate(dSet2);
-    //printf("\n");
-    printf("Checking whether set 1 is a subset of set 2 or not\n");
-    if(is_subset(dSet, dSet1))
-        printf("dSet is a subset of dSet1\n");
-    else
-        printf("dSet is not a subset of dSet1\n");
-    return(0);
+	int b[5] = {1, 2, 3, 4, 34};
+	struct Node* s1 = build(b, 5);
+	
+	//verify(is_element_of(s1, 1));
+	
+	//verify(is_empty(s1));
+	
+	int arr[2] = {1, 1};
+	struct Node* newS = build1(arr, 2);
+	enumerate(newS);
+	//printf("Cardinality = %d\n", cardinality(s1));
+	
+	// Static Functions till here
+	
+	//struct Node* s2 = create();
+	
+	//printf("Cardinality = %d\n", cardinality(s2));
+	struct Node* s3 = NULL;
+	//s3 = add(s3, 22);
+	s3 = add(s3, 4);
+	s3 = add(s3, 1);
+	//s3 = add(s3, 25);
+	s3 = add(s3, 3);
+	//enumerate(s1);
+	//enumerate(s3);
+	struct Node* s4 = NULL;
+	// Finding the union
+	
+	//s4 = getUnion(s1, s3);
+	//enumerate(s4);
+	
+	// Finding the intersection
+	
+	/*
+	if(getIntersection(s1, s3))
+		enumerate(getIntersection(s1, s3));
+	else
+		printf("The intersection of the lists is NULL set\n");
+	
+	if(!difference(s1, s3))
+		printf("Difference of the sets is a NULL set\n");
+	else
+		enumerate(difference(s1, s3));
+	*/
+	struct Node* u1 = NULL;
+	u1 = add(u1,1);u1 = add(u1,2);u1 = add(u1,3);u1 = add(u1,4);u1 = add(u1,5);
+	struct Node* u2 = NULL; u2 = add(u2, 22);
+
+	if(!subset(u2, u1))
+		printf("u2 is not a subset of u1\n");
+	else
+		printf("u2 is a subset of u1\n");
+		
+	return(0);
+}
+void verify(int p)
+{
+	if(p)
+		printf("Yes\n");
+	else
+		printf("No\n");
+}
+
+int min(int n1, int n2)
+{
+	if(n1 < n2)
+		return n1;
+	else
+		return n2;
 }

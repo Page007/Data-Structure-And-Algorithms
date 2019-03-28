@@ -1,116 +1,97 @@
-#include "library.h"
+#include "utility.h"
 
-int hashFunction(int value)
+int is_element_of(struct Node* head, int x)		// Returns true if 'x' is an element of the set
 {
-    return value % 10;  // return key for a given value
+	struct Node* current = head;
+	while(current)
+	{
+		if(current->data == x)
+			return 1;				// Return true if 'x' is an element of the set
+		current = current->link;
+	}
+	return 0;						// Control reaches here only if 'x' is not an element of the set.
 }
 
-struct Node** setup(struct Node** hash) // Function for initializing a hash table
+int is_empty(struct Node* head)		// Returns true if the set is empty
 {
-    hash = (struct Node**)malloc(sizeof(struct Node*)*HASHVAL);
-    for(int i = 0; i < HASHVAL; i++)
-        hash[i] = NULL;
-    return hash;
+	if(head == NULL)
+		return 1;					// If head is NULL, return true, else return false
+	return 0;
 }
 
-int is_element_of(struct Node** hash, int val)  // Checking whether val is an element of hash in O(1) time.
+int cardinality(struct Node* head)	// Returns the number of elements in the set.
 {
-    int key = hashFunction(val);
-    if(!hash[key])
-        return 0;   // Return false if the record of hash table has not been initialized.
-    struct Node* current = hash[key];
-    while(current)
-    {
-        if(current->data == val)
-            return 1;   // Return true if value is found
-        current= current->link;
-    }
-    return 0;   // Control reaches here if and only if the element was not found in the hash table.
+	struct Node* current = head;
+	if(current == NULL)
+		return 0;			// Return 0 on empty set.
+	int count = 0;
+	while(current)
+	{
+		count += 1;
+		current = current->link;
+	}
+	return count;
 }
 
-int is_empty(struct Node** hash)
+
+void enumerate(struct Node* head) 	// Prints the set in an arbitrary order
 {
-    for(int i = 0; i < HASHVAL; i++)
-        if(hash[i])
-            return 0;   // Check if every record of the hash table is empty or not.
-    return 1; 
+	struct Node* current = head;
+	if(!head)
+	{
+		printf("List is empty\n");
+		return;
+	}
+	while(current)
+	{
+		printf("%d ", current->data);
+		current = current->link;
+	}	
+	printf("\n");
 }
 
-int size(struct Node** hash)
+struct Node* build(int* a, int n)	// Returns linked list data structure using an array as input.
 {
-    int count = 0;  // Initialize the counter to zero.
-    for(int i = 0; i < HASHVAL; i++)
-    {
-        if(!hash[i])
-            continue;   // If the record is NULL, continue with the loop.
-        struct Node* current = hash[i];
-        while(current)
-        {
-            count++;
-            current = current->link;
-        }
-        current = NULL;
-    }
-    return count;   // Return the count of elements in the hash table
+	struct Node* current; struct Node* temp;struct Node* head;
+	for(int i = 0; i < n; i++)
+	{
+		temp = (struct Node*)malloc(sizeof(struct Node));
+		temp->data = a[i]; temp->link = NULL;
+		if(!i)
+		{
+			current = temp;
+			head = current;
+			continue;
+		}
+		current->link = temp;
+		current = current->link;
+	}
+	return head;
 }
 
-void enumerate(struct Node** hash)
-{
-    if(is_empty(hash))  
-    {
-        printf("The set is empty\n");
-        return;                         // Return if the hash table is empty.
-    }
-    for(int i = 0; i < HASHVAL; i++)
-    {
-        if(!hash[i])
-            continue;
-        struct Node* current = hash[i];
-        while(current)
-        {
-            printf("%d ", current->data);
-            current = current->link;
-        }
-    }
-    printf("\n");
-}
 
-struct Node** build(int* a, int n)
+struct Node* build1(int* a, int n)	// Returns set data structure using an array as input.
 {
-    struct Node** hash;
-    hash = setup(hash);
-    for(int i = 0; i < n; i++)
-    {
-        if(a[i] == -1)
-            continue;
-        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-        newNode->link = NULL; newNode->data = a[i];
-        if(!hash[hashFunction(a[i])])
-        {
-            hash[i] = newNode;
-            continue;
-        }
-        struct Node* current = hash[hashFunction(a[i])];
-        while(current->link)
-            current = current->link;
-        current->link = newNode;
-    }
-    return hash;
-}
-
-struct Node** build1(int* a, int n) // Modifies the array for the removal of duplicates
-{
-    for(int i = 0; i < n; i++)
-    {
-        if(a[i] == -1)
-            continue;
-        for(int j = i + 1; j < n; j++)
-        {
-            if(a[j] == -1)
-                continue;
-            if(a[i] == a[j])
-                a[j] = -1;
-        }
-    }
-    return build(a, n);
+	struct Node* current; struct Node* temp;struct Node* head = NULL;
+	for(int i = 0; i < n; i++)
+	{
+		if(a[i] == -1)
+			continue;
+		for(int j = i + 1; j < n; j++)
+		{
+			if(a[j] == -1)
+				continue;
+			if(a[i] == a[j])
+				a[j] = -1;
+		}
+		current = (struct Node*)malloc(sizeof(struct Node));
+		current->data = a[i]; current->link = NULL;
+		if(head == NULL)
+		{
+			head = current; continue;
+		}
+		current->link = head;
+		head = current;
+	}
+	return head;
 }
